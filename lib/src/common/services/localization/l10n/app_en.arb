@@ -1,3 +1,20 @@
 {
-  "hello": "Hello world"
+  "today": "Today",
+  "cloudy": "Cloudy",
+  "wind": "Wind",
+  "hum": "Hum",
+  "windSpeed": "{speed} km/h",
+  "@windSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "forecastReport": "Forecast report",
+  "searchHere": "Search here",
+  "recentSearch": "Recent search",
+  "back": "Back",
+  "nextForecast": "Next Forecast"
 }

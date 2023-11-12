@@ -95,11 +95,65 @@ abstract class AppLocalizations {
     Locale('uz')
   ];
 
-  /// No description provided for @hello.
+  /// No description provided for @today.
   ///
   /// In en, this message translates to:
-  /// **'Hello world'**
-  String get hello;
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @cloudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cloudy'**
+  String get cloudy;
+
+  /// No description provided for @wind.
+  ///
+  /// In en, this message translates to:
+  /// **'Wind'**
+  String get wind;
+
+  /// No description provided for @hum.
+  ///
+  /// In en, this message translates to:
+  /// **'Hum'**
+  String get hum;
+
+  /// No description provided for @windSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'{speed} km/h'**
+  String windSpeed(int speed);
+
+  /// No description provided for @forecastReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Forecast report'**
+  String get forecastReport;
+
+  /// No description provided for @searchHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Search here'**
+  String get searchHere;
+
+  /// No description provided for @recentSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent search'**
+  String get recentSearch;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @nextForecast.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Forecast'**
+  String get nextForecast;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -23,6 +23,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.1
+  yandex_mapkit: ^3.3.3
+  geolocator: ^10.1.0
 
 dev_dependencies:
   flutter_test:

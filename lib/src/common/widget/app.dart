@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:yandex_mapkit/yandex_mapkit.dart';
+
 class App extends StatelessWidget {
   const App({super.key});
 

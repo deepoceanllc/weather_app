@@ -4,4 +4,5 @@ abstract class AppIcons {
   static const calendar = "$_path/calendar.svg";
   static const clock = "$_path/clock.svg";
   static const settings = "$_path/set.svg";
+  static const location = "$_path/location.svg";
 }

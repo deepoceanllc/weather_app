@@ -56,6 +56,7 @@ flutter:
     - family: Overpass
       fonts:
         - asset: assets/fonts/Overpass-Regular.ttf
+          weight: 400
         - asset: assets/fonts/Overpass-Bold.ttf
           weight: 700
         - asset: assets/fonts/Overpass-Black.ttf

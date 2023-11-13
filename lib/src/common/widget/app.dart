@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:yandex_mapkit/yandex_mapkit.dart';
+import 'package:weather_app/src/features/home/home_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -13,7 +12,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Placeholder(),
+      home: const HomePage(),
     );
   }
 }

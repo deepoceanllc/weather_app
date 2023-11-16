@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/src/features/home/home_page.dart';
 
+
 class App extends StatelessWidget {
   const App({super.key});
 

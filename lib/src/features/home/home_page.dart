@@ -11,13 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  static const items = <String>[
-    'Dart',
-    'Flutter',
-    'Java',
-    'Python',
-    'Swift'
-  ];
+  static const items = <String>['Dart', 'Flutter', 'Java', 'Python', 'Swift'];
 
   String value = items[1];
 
@@ -48,24 +42,27 @@ class _HomePage extends State<HomePage> {
                   ),
                   const SizedBox(width: 5),
                   DropdownButton(
+                    underline: const SizedBox.shrink(),
                     value: value,
                     onChanged: (value) {
-                      if(value == null) {
+                      if (value == null) {
                         print("added");
                       } else {
                         this.value = value!;
                         setState(() {});
                       }
-
                     },
                     items: List.generate(items.length + 1, (index) {
-                      if(index == items.length) {
+                      if (index == items.length) {
                         return const DropdownMenuItem(child: Icon(Icons.add));
                       }
                       final itemValue = items.elementAt(index);
                       return DropdownMenuItem<String>(
                         value: itemValue,
-                        child: Text(itemValue),
+                        child: Text(
+                          itemValue,
+                          style: TextStyle(color: AppColors.white),
+                        ),
                       );
                     }),
                   ),

@@ -11,7 +11,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  String value = '';
+  static const items = <String>[
+    'Dart',
+    'Flutter',
+    'Java',
+    'Python',
+    'Swift'
+  ];
+
+  String value = items[1];
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +46,28 @@ class _HomePage extends State<HomePage> {
                     width: 20.spMin,
                     height: 20.spMin,
                   ),
-                  SizedBox(width: 5),
-                  const Text("Samerang"),
+                  const SizedBox(width: 5),
                   DropdownButton(
+                    value: value,
                     onChanged: (value) {
-                      value = value;
-                      setState(() {});
+                      if(value == null) {
+                        print("added");
+                      } else {
+                        this.value = value!;
+                        setState(() {});
+                      }
+
                     },
-                    items: <String>[
-                      'Dart',
-                      'Flutter',
-                      'Java',
-                      'Python',
-                      'Swift'
-                    ].map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
-                    ).toList(),
+                    items: List.generate(items.length + 1, (index) {
+                      if(index == items.length) {
+                        return const DropdownMenuItem(child: Icon(Icons.add));
+                      }
+                      final itemValue = items.elementAt(index);
+                      return DropdownMenuItem<String>(
+                        value: itemValue,
+                        child: Text(itemValue),
+                      );
+                    }),
                   ),
                 ],
               ),

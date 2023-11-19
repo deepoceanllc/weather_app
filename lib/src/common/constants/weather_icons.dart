@@ -7,4 +7,6 @@ abstract class WeathersIcons {
   static const nightCloud = "$_path/night_cloud.png";
   static const sunny = "$_path/sunny.png";
   static const thunder = "$_path/thunder.png";
+  static const settings = "$_path/set.png";
+  static const sun = "$_path/sun_2.png";
 }

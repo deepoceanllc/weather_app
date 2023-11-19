@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weather_app/src/features/home/home_page.dart';
+
+import '../../features/detail/detail_page.dart';
 
 
 class App extends StatelessWidget {
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
           home: child,
         );
       },
-      child: const HomePage(),
+      child: const DetailPage(),
     );
   }
 }

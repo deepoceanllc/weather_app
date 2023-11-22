@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../features/detail/detail_page.dart';
-
+import 'package:weather_app/src/common/routes/app_routes.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -13,20 +11,17 @@ class App extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      // Use builder only if you need to use library outside ScreenUtilInit context
-      builder: (_ , child) {
+      builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Weather App',
           theme: ThemeData(
             fontFamily: "Overpass",
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: child,
+          routes: AppRoute.routes,
         );
       },
-      child: const DetailPage(),
     );
   }
 }

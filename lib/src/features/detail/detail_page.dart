@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,8 +34,10 @@ class _DetailPage extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.blue1,
       appBar: AppBar(
         elevation: 0,
+        scrolledUnderElevation: 0,
         toolbarHeight: 90.h,
         leadingWidth: 100.w,
         leading: Padding(
@@ -63,7 +64,7 @@ class _DetailPage extends State<DetailPage> {
             ),
           ),
         ),
-        backgroundColor: AppColors.blue1,
+        forceMaterialTransparency: true,
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10.w),
@@ -235,7 +236,9 @@ class _DetailPage extends State<DetailPage> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image(image: const AssetImage(WeathersIcons.sun), width: 24.r),
+                    Image(
+                        image: const AssetImage(WeathersIcons.sun),
+                        width: 24.r),
                     const CustomText(
                       fondSize: 18,
                       text: "AccuWeather",

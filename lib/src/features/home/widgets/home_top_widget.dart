@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weather_app/src/common/constants/app_colors.dart';
+import 'package:weather_app/src/common/routes/app_routes.dart';
 import 'package:weather_app/src/features/home/widgets/location_item_widget.dart';
 
 class HomeTopWidget extends StatefulWidget {
@@ -42,7 +43,9 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
             (index) {
               if (index == items.length) {
                 return PopupMenuItem(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoute.map);
+                  },
                   child: const LocationItemWidget(
                     location: "Add new location",
                   ),

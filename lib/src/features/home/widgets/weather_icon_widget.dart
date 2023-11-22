@@ -8,8 +8,13 @@ class WeatherIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Image(
-      image: AssetImage(WeathersIcons.sunny),
+    return const Padding(
+      padding: EdgeInsets.all(50.0),
+      child: Center(
+        child: Image(
+          image: AssetImage(WeathersIcons.nightCloud),
+        ),
+      ),
     );
   }
 }

@@ -27,7 +27,6 @@ class _HomePage extends State<HomePage> {
               child: const Column(
                 children: [
                   HomeTopWidget(),
-                  Spacer(),
                   Expanded(flex: 4, child: WeatherIconWidget()),
                   Expanded(flex: 3, child: WeatherStatusWidget()),
                   Expanded(child: HomeFooterButton()),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/src/common/models/main_model.dart';
 import 'package:weather_app/src/features/home/widgets/home_footer_button.dart';
 import 'package:weather_app/src/features/home/widgets/home_top_widget.dart';
 import 'package:weather_app/src/features/home/widgets/weather_icon_widget.dart';
 import 'package:weather_app/src/features/home/widgets/weather_status_widget.dart';
+import 'package:weather_app/src/features/repository/cities_repository.dart';
 import 'package:weather_app/src/features/widgets/app_background.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
+
+  late CitiesRepository repository;
+
+  @override
+  void initState() {
+    repository = CitiesRepository();
+    getCitiess();
+    super.initState();
+  }
+
+  void getCitiess() async {
+    BaseModel baseModel = await repository.getCities();
+    print(baseModel);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

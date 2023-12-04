@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -43,8 +44,10 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
             (index) {
               if (index == items.length) {
                 return PopupMenuItem(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoute.map);
+                  onTap: () async {
+                    final point = await Navigator.pushNamed(context, AppRoute.map);
+                    if(point != null) {
+                    }
                   },
                   child: const LocationItemWidget(
                     location: "Add new location",

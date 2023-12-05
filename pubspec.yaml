@@ -20,6 +20,8 @@ dependencies:
   geolocator: ^10.1.0
   flutter_svg: ^2.0.9
   shared_preferences: ^2.2.2
+  bloc: ^8.1.2
+  meta: ^1.10.0
 
 dev_dependencies:
   flutter_test:

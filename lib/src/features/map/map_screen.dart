@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../common/constants/app_colors.dart';
 import 'bloc/map_bloc.dart';
+import 'cubit/search_cubit.dart';
 import 'widgets/custom_searchBar.dart';
 
 class MapScreen extends StatefulWidget {
@@ -18,29 +22,36 @@ class _MapScreenState extends State<MapScreen> {
   late FocusNode focusNode;
   final ValueNotifier<bool> isFocused = ValueNotifier<bool>(false);
   final GlobalKey searchKey = GlobalKey();
+  late YandexMapController _controller;
   late final MapBloc mapBloc;
+
+  late SearchCubit cubit;
 
   @override
   void initState() {
+    cubit = SearchCubit();
     mapBloc = MapBloc();
     focusNode = FocusNode()..addListener(onFocus);
-    controller = TextEditingController();
+    controller = TextEditingController()..addListener(onChange);
     super.initState();
   }
 
   @override
   void dispose() {
+    cubit.close();
     mapBloc.close();
     focusNode
       ..removeListener(onFocus)
       ..dispose();
-    controller.dispose();
+    controller
+      ..removeListener(onChange)
+      ..dispose();
     super.dispose();
   }
 
   void onFocus() {
     isFocused.value = focusNode.hasFocus;
-    if(isFocused.value){
+    if (isFocused.value) {
       mapBloc.add(GetFromStorage());
     }
   }
@@ -51,6 +62,14 @@ class _MapScreenState extends State<MapScreen> {
     return renderBox?.size.height ?? 0;
   }
 
+  void onChange() {
+    if (controller.text.isEmpty) {
+      mapBloc.add(GetFromStorage());
+    } else {
+      mapBloc.add(GetCities(controller.text));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -59,7 +78,22 @@ class _MapScreenState extends State<MapScreen> {
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            const YandexMap(),
+            StreamBuilder<SearchState>(
+                stream: cubit.stream,
+                builder: (context, snapshot) {
+                  final data = snapshot.data;
+                  if (data is SearchErrorState) {
+                    return const Center(
+                      child: Text("Error"),
+                    );
+                  }
+                  return YandexMap(
+                    mapObjects: data?.markers ?? [],
+                    onMapCreated: (controller) {
+                      _controller = controller;
+                    },
+                  );
+                }),
             Positioned(
               top: 10.r,
               right: 10.r,
@@ -67,13 +101,6 @@ class _MapScreenState extends State<MapScreen> {
               child: SafeArea(
                 child: CustomSearchBar(
                   onTap: () {},
-                  onChanged: (value) {
-                    if (value!.isEmpty) {
-                      mapBloc.add(GetFromStorage());
-                    } else {
-                      mapBloc.add(GetCities(value));
-                    }
-                  },
                   searchKey: searchKey,
                   controller: controller,
                   focusNode: focusNode,
@@ -110,6 +137,10 @@ class _MapScreenState extends State<MapScreen> {
                               itemBuilder: (context, index) {
                                 final item = state.mapItems[index];
                                 return ListTile(
+                                  onTap: () async {
+                                    cubit.addMarker(item, _controller);
+                                    focusNode.unfocus();
+                                  },
                                   title: Text(
                                     item.name,
                                   ),
@@ -142,6 +173,32 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ),
                     );
+                  }),
+            ),
+            Positioned(
+              bottom: 25.h,
+              left: 50.w,
+              right: 50.w,
+              child: StreamBuilder<SearchState>(
+                  stream: cubit.stream,
+                  builder: (context, snapshot) {
+                    final data = snapshot.data;
+                    if (data is SearchSuccess) {
+                      return ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromHeight(50.h),
+                            elevation: 30,
+                            backgroundColor: AppColors.blue2,
+                            foregroundColor: AppColors.white),
+                        onPressed: () {
+                          Navigator.pop(context, data.name);
+                        },
+                        child: const Text(
+                          "Qo'shish",
+                        ),
+                      );
+                    }
+                    return const SizedBox();
                   }),
             ),
           ],

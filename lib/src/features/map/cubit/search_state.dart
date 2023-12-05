@@ -32,11 +32,11 @@ class SearchErrorState extends SearchState {
 }
 
 class SearchSuccess extends SearchState {
-  final String name;
+  final PointModel pointModel;
 
   SearchSuccess(
     super.markers,
-    this.name,
+    this.pointModel,
   );
 
   @override

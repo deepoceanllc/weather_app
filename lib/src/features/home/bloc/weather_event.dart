@@ -13,11 +13,11 @@ class GetData extends WeatherEvent {
 }
 
 class GetCiti extends WeatherEvent {
-  final String query;
+  final PointModel point;
   final bool isNew;
 
   GetCiti({
-    required this.query,
+    required this.point,
     this.isNew = false,
   });
 

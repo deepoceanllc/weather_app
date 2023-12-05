@@ -190,7 +190,7 @@ class _MapScreenState extends State<MapScreen> {
                             backgroundColor: AppColors.blue2,
                             foregroundColor: AppColors.white),
                         onPressed: () {
-                          Navigator.pop(context, data.name);
+                          Navigator.pop(context, data.pointModel);
                         },
                         child: const Text(
                           "Qo'shish",

@@ -260,7 +260,7 @@ class Main {
   });
 
   factory Main.fromJson(Map<Object, Object?> json) => Main(
-        temp: json["temp"] as double,
+        temp: json["temp"] as num,
         feelsLike: json["feels_like"] as num,
         tempMin: json["temp_min"] as num,
         tempMax: json["temp_max"] as num,

@@ -13,11 +13,13 @@ abstract class ApiConst {
 
   static Map<String,String> getCiti(String query) => {
     'q': query,
+    'units': 'metric',
   };
 
   static Map<String,Object> getCitiPosition(double lat , double lon) => {
     'lat': lat,
     'lon': lon,
+    'units': 'metric',
   };
 
 }

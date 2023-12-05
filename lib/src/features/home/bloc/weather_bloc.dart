@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -6,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/common/models/main_model.dart';
+import 'package:weather_app/src/common/models/point_model.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../repository/cities_repository.dart';
 
@@ -30,19 +33,27 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     try {
       final BaseModel citi;
       db = await SharedPreferences.getInstance();
-     // db.clear();
+      // db.clear();
       String? res = db.getString("citi");
 
       if (res == null) {
         Position position = await Geolocator.getCurrentPosition();
         citi = await repository.getCitiesPosition(
             position.latitude, position.longitude);
+        String point = jsonEncode(
+          PointModel(
+            lat: position.latitude,
+            lon: position.longitude,
+            name: citi.city.name,
+          ).toMap(),
+        );
         await Future.wait([
-          db.setString("citi", citi.city.name),
-          db.setStringList("cities", [citi.city.name])
+          db.setString("citi", point),
+          db.setStringList("cities", [point]),
         ]);
       } else {
-        citi = await repository.getCities(res);
+        PointModel pointModel = PointModel.fromMap(jsonDecode(res));
+        citi = await repository.getCitiesPosition(pointModel.lat, pointModel.lon);
       }
       emit(SuccessState(citi));
     } on DioException catch (e) {
@@ -55,10 +66,14 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     try {
       if (event.isNew) {
         final cities = db.getStringList("cities") ?? [];
-        db.setStringList("cities", cities..add(event.query));
+        db.setStringList("cities", cities..add(jsonEncode(event.point.toMap())));
+        print(' -------------------------------');
+        print(event.point.lat);
+        print(event.point.lon);
       }
-      await db.setString("citi", event.query);
-      baseModel = await repository.getCities(event.query);
+      await db.setString("citi", jsonEncode(event.point.toMap()));
+      baseModel = await repository.getCitiesPosition(
+          event.point.lat, event.point.lon);
       emit(SuccessState(baseModel));
     } on DioException catch (e) {
       emit(ErrorState(e.message!));

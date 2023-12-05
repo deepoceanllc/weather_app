@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../../common/models/point_model.dart';
+
 part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
@@ -10,25 +12,17 @@ class SearchCubit extends Cubit<SearchState> {
 
   static const MapObjectId _mapObjectId = MapObjectId('normal_icon_placemark');
 
-  void addMarker(SearchItem item,YandexMapController controller) async {
+  void addMarker(SearchItem item, YandexMapController controller) async {
     try {
       final point = Point(
         latitude: item.toponymMetadata!.balloonPoint.latitude,
         longitude: item.toponymMetadata!.balloonPoint.longitude,
       );
-      print('---------------------------------------------------------');
-      // print(item.toponymMetadata?.address.addressComponents);
-      // print(item.toponymMetadata?.address.formattedAddress);
-      // print(item.toponymMetadata?.props);
-      // print(item.businessMetadata?.props);
-      // print(item.businessMetadata?.address);
-      // print(item.businessMetadata?.address.formattedAddress);
-      // print(item.businessMetadata?.address.addressComponents);
 
-
-      print(item.name);
+      PointModel pointModel = PointModel(
+        lat: point.latitude, lon: point.longitude, name: item.name,);
       final mapObject = _createObject(point: point, name: item.name);
-      emit(SearchSuccess([mapObject],item.name));
+      emit(SearchSuccess([mapObject], pointModel));
       await _moveAt(point, controller);
     } catch (e) {
       emit(SearchErrorState(e.toString()));
@@ -36,7 +30,7 @@ class SearchCubit extends Cubit<SearchState> {
   }
 
 
-  Future<void> _moveAt(Point point,YandexMapController controller) async {
+  Future<void> _moveAt(Point point, YandexMapController controller) async {
     await controller.moveCamera(
       CameraUpdate.newCameraPosition(CameraPosition(target: point)),
       animation: const MapAnimation(),

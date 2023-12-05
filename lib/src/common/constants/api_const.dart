@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:weather_app/src/common/constants/confity.dart';
 

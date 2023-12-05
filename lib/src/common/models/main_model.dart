@@ -92,7 +92,7 @@ class CitiesModel {
   Clouds clouds;
   Wind wind;
   int visibility;
-  double pop;
+  num pop;
   Snow? snow;
   Sys? sys;
   DateTime? dtTxt;
@@ -118,7 +118,7 @@ class CitiesModel {
         clouds: Clouds.fromJson(json["clouds"] as Map<String, Object?>),
         wind: Wind.fromJson(json["wind"] as Map<String, Object?>),
         visibility: json["visibility"] as int,
-        pop: json["pop"] as double,
+        pop: json["pop"] as num,
         snow: json["snow"] != null
             ? Snow.fromJson(json["snow"] as Map<String, Object?>)
             : null,
@@ -171,9 +171,9 @@ class Snow {
 }
 
 class Wind {
-  double speed;
-  double deg;
-  double gust;
+  num speed;
+  num deg;
+  num gust;
 
   Wind({
     required this.speed,
@@ -182,9 +182,9 @@ class Wind {
   });
 
   factory Wind.fromJson(Map<String, Object?> json) => Wind(
-        speed: json["speed"] as double,
-        deg: json["deg"] as double,
-        gust: json["gust"] as double,
+        speed: json["speed"] as num,
+        deg: json["deg"] as num,
+        gust: json["gust"] as num,
       );
 
   Map<String, Object?> toJson() => {
@@ -237,15 +237,15 @@ class Weather {
 }
 
 class Main {
-  double temp;
-  double feelsLike;
-  double tempMin;
-  double tempMax;
-  double pressure;
-  double seaLevel;
-  double grndLevel;
-  double humidity;
-  double tempKf;
+  num temp;
+  num feelsLike;
+  num tempMin;
+  num tempMax;
+  num pressure;
+  num seaLevel;
+  num grndLevel;
+  num humidity;
+  num tempKf;
 
   Main({
     required this.temp,
@@ -261,14 +261,14 @@ class Main {
 
   factory Main.fromJson(Map<Object, Object?> json) => Main(
         temp: json["temp"] as double,
-        feelsLike: json["feels_like"] as double,
-        tempMin: json["temp_min"] as double,
-        tempMax: json["temp_max"] as double,
-        pressure: json["pressure"] as double,
-        seaLevel: json["sea_level"] as double,
-        grndLevel: json["grnd_level"] as double,
-        humidity: json["humidity"] as double,
-        tempKf: json["temp_kf"] as double,
+        feelsLike: json["feels_like"] as num,
+        tempMin: json["temp_min"] as num,
+        tempMax: json["temp_max"] as num,
+        pressure: json["pressure"] as num,
+        seaLevel: json["sea_level"] as num,
+        grndLevel: json["grnd_level"] as num,
+        humidity: json["humidity"] as num,
+        tempKf: json["temp_kf"] as num,
       );
 
   Map<String, Object?> toJson() => {
@@ -329,15 +329,14 @@ class City {
 }
 
 class Coord {
-  int? lat;
-
-  int? lon;
+  num? lat;
+  num? lon;
 
   Coord({required this.lat, required this.lon});
 
   factory Coord.fromJson(Map<String, Object?> json) => Coord(
-        lat: json["lat"] as int?,
-        lon: json["lon"] as int?,
+        lat: json["lat"] as num?,
+        lon: json["lon"] as num?,
       );
 
   Map<String, Object?> toJson() => {

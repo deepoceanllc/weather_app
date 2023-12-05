@@ -15,8 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-
   late CitiesRepository repository;
+  BaseModel? baseModel;
 
   @override
   void initState() {
@@ -26,10 +26,9 @@ class _HomePage extends State<HomePage> {
   }
 
   void getCitiess() async {
-    BaseModel baseModel = await repository.getCities();
-    print(baseModel);
+    baseModel = await repository.getCities("London");
+    setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {

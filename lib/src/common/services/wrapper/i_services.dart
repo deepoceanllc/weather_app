@@ -29,7 +29,7 @@ class CitiesServices implements IServicesWrapper {
     String path, {
     Method method = Method.get,
     Map<String, String>? headers,
-    Map<String, String>? queryParameters,
+    Map<String, Object>? queryParameters,
     Map<String, Object>? body,
   }) =>
       services.request(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/src/common/routes/app_routes.dart';
+
+import '../../features/home/bloc/weather_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -20,6 +23,10 @@ class App extends StatelessWidget {
             useMaterial3: true,
           ),
           routes: AppRoute.routes,
+          builder: (context, child) => BlocProvider<WeatherBloc>(
+              create: (context) => WeatherBloc()..add(GetData()),
+              child: child,
+            ),
         );
       },
     );

@@ -2,7 +2,7 @@ part of 'search_cubit.dart';
 
 @immutable
 abstract class SearchState with _MapPatternMatcherState {
-  SearchState([this.markers =  const []]);
+  SearchState([this.markers = const []]);
 
   final List<PlacemarkMapObject> markers;
 }
@@ -32,7 +32,12 @@ class SearchErrorState extends SearchState {
 }
 
 class SearchSuccess extends SearchState {
-  SearchSuccess(super.markers);
+  final String name;
+
+  SearchSuccess(
+    super.markers,
+    this.name,
+  );
 
   @override
   T map<T>({

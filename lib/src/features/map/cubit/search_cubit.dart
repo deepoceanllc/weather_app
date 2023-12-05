@@ -17,18 +17,18 @@ class SearchCubit extends Cubit<SearchState> {
         longitude: item.toponymMetadata!.balloonPoint.longitude,
       );
       print('---------------------------------------------------------');
-      print(item.toponymMetadata?.address.addressComponents);
-      print(item.toponymMetadata?.address.formattedAddress);
-      print(item.toponymMetadata?.props);
-      print(item.businessMetadata?.props);
-      print(item.businessMetadata?.address);
-      print(item.businessMetadata?.address.formattedAddress);
-      print(item.businessMetadata?.address.addressComponents);
+      // print(item.toponymMetadata?.address.addressComponents);
+      // print(item.toponymMetadata?.address.formattedAddress);
+      // print(item.toponymMetadata?.props);
+      // print(item.businessMetadata?.props);
+      // print(item.businessMetadata?.address);
+      // print(item.businessMetadata?.address.formattedAddress);
+      // print(item.businessMetadata?.address.addressComponents);
 
 
-
+      print(item.name);
       final mapObject = _createObject(point: point, name: item.name);
-      emit(SearchSuccess([mapObject]));
+      emit(SearchSuccess([mapObject],item.name));
       await _moveAt(point, controller);
     } catch (e) {
       emit(SearchErrorState(e.toString()));

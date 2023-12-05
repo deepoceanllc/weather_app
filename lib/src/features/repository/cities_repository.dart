@@ -10,7 +10,9 @@ import '../../common/models/main_model.dart';
 abstract interface class ICitiesRepository {
   abstract final CitiesServices citiesServices;
 
-  Future<BaseModel> getCities();
+  Future<BaseModel> getCities(String query);
+
+  Future<BaseModel> getCitiesPosition(double lat, double lon);
 }
 
 class CitiesRepository implements ICitiesRepository {
@@ -18,7 +20,7 @@ class CitiesRepository implements ICitiesRepository {
 
   static final dio = Dio(
     BaseOptions(
-      baseUrl: "",
+      baseUrl: ApiConf.baseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       responseType: ResponseType.json,
@@ -29,10 +31,19 @@ class CitiesRepository implements ICitiesRepository {
   final CitiesServices citiesServices;
 
   @override
-  Future<BaseModel> getCities() async {
+  Future<BaseModel> getCities(String query) async {
     String response = await citiesServices.request(
       ApiConst.allPath,
-      queryParameters: ApiConst.geoParams(ApiConf.apiKey),
+      queryParameters: ApiConst.getCiti(query),
+    );
+    return BaseModel.fromJson(jsonDecode(response));
+  }
+
+  @override
+  Future<BaseModel> getCitiesPosition(double lat, double lon) async {
+    String response = await citiesServices.request(
+      ApiConst.allPath,
+      queryParameters: ApiConst.getCitiPosition(lat, lon),
     );
     return BaseModel.fromJson(jsonDecode(response));
   }

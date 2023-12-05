@@ -1,5 +1,7 @@
 
 import 'package:dio/dio.dart';
+import 'package:weather_app/src/common/constants/api_const.dart';
+import 'package:weather_app/src/common/constants/confity.dart';
 
 enum Method {
   get,
@@ -22,11 +24,11 @@ class AppServices {
     String path, {
     Method method = Method.get,
     Map<String, String>? headers,
-    Map<String, String>? queryParameters,
+    Map<String, Object>? queryParameters,
     Object? body,
   }) async {
     if (headers != null) dio.options.headers.addAll(headers);
-
+    queryParameters = (queryParameters == null) ? ApiConst.baseQuery() : queryParameters..addAll(ApiConst.baseQuery());
     try {
       Response<String> response = await switch (method) {
         Method.get =>

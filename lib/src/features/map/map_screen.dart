@@ -186,15 +186,16 @@ class _MapScreenState extends State<MapScreen> {
                     if (data is SearchSuccess) {
                       return ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromHeight(50.h),
-                          elevation: 30,
-                          backgroundColor: AppColors.blue2,
-                          foregroundColor: AppColors.white
-                        ),
+                            fixedSize: Size.fromHeight(50.h),
+                            elevation: 30,
+                            backgroundColor: AppColors.blue2,
+                            foregroundColor: AppColors.white),
                         onPressed: () {
-                          Navigator.pop(context,data.markers.first.point);
+                          Navigator.pop(context, data.name);
                         },
-                        child: const Text("Qo'shish",),
+                        child: const Text(
+                          "Qo'shish",
+                        ),
                       );
                     }
                     return const SizedBox();

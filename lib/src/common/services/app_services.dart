@@ -1,7 +1,6 @@
 
 import 'package:dio/dio.dart';
 import 'package:weather_app/src/common/constants/api_const.dart';
-import 'package:weather_app/src/common/constants/confity.dart';
 
 enum Method {
   get,
@@ -70,9 +69,7 @@ class AppServices {
             StackTrace.current,
           ),
       };
-    } catch (error, stackTrace) {
-      print(error);
-      print(stackTrace);
+    } catch (error) {
       rethrow;
     }
   }

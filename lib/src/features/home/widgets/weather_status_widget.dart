@@ -17,7 +17,7 @@ class WeatherStatusWidget extends StatelessWidget {
     return BlocBuilder<WeatherBloc, WeatherState>(
       builder: (context, state) {
         state = state as SuccessState;
-        return  GlassContainer(
+        return GlassContainer(
           height: double.infinity,
           width: double.infinity,
           elevation: 20,
@@ -37,7 +37,6 @@ class WeatherStatusWidget extends StatelessWidget {
             Radius.circular(18),
           ),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomText(
@@ -52,8 +51,9 @@ class WeatherStatusWidget extends StatelessWidget {
                 fondSize: 18.sp,
                 text: state.baseModel.list.first.weather.first.main,
               ),
+              SizedBox(height: 10.h),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomText(fondSize: 12.sp, text: "Wind"),
                   Container(
@@ -70,11 +70,18 @@ class WeatherStatusWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 50.w,child: CustomText(fondSize: 12.sp, text: "${(state.baseModel.list.first.wind.speed * 3.6).round()} km/h")),
+                  SizedBox(
+                    width: 50.w,
+                    child: CustomText(
+                      fondSize: 12.sp,
+                      text:
+                          "${(state.baseModel.list.first.wind.speed * 3.6).round()} km/h",
+                    ),
+                  ),
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomText(fondSize: 12.sp, text: "Hum "),
                   Container(
@@ -91,7 +98,13 @@ class WeatherStatusWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 50.w,child: CustomText(fondSize: 12.sp, text: "${state.baseModel.list.first.main.humidity} %")),
+                  SizedBox(
+                    width: 50.w,
+                    child: CustomText(
+                      fondSize: 12.sp,
+                      text: "${state.baseModel.list.first.main.humidity} %",
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -102,9 +115,9 @@ class WeatherStatusWidget extends StatelessWidget {
   }
 }
 
-extension on DateTime {
-  String getDay() {
-    return "Today, $day ${switch (month) {
+extension DataExtension on DateTime {
+  String getMonth() {
+    return switch (month) {
       1 => "January",
       2 => "February",
       3 => "March",
@@ -118,6 +131,14 @@ extension on DateTime {
       11 => "November",
       12 => "December",
       _ => "",
-    }}";
+    };
+  }
+
+  String toShort() {
+    return "${getMonth().substring(0, 3)}, $day";
+  }
+
+  String getDay() {
+    return "Today, $day ${getMonth()}";
   }
 }

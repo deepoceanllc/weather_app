@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weather_app/src/features/home/widgets/weather_status_widget.dart';
 import 'package:weather_app/src/features/widgets/custom_weatherwidget.dart';
 
 import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/constants/weather_icons.dart';
+import '../home/bloc/weather_bloc.dart';
 import '../widgets/custom_text.dart';
 import 'widgets/custom_button.dart';
 
@@ -18,6 +21,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPage extends State<DetailPage> {
   late ScrollController controller;
+  ValueNotifier<int> focused = ValueNotifier<int>(0);
 
   @override
   void initState() {
@@ -78,187 +82,160 @@ class _DetailPage extends State<DetailPage> {
           ),
         ],
       ),
-      body: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.blue1,
-              AppColors.blue2,
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: [0, 1],
+      body: BlocBuilder<WeatherBloc, WeatherState>(
+        builder: (context, state) => state.map(
+          onLoading: (state) => const Center(
+            child: CircularProgressIndicator(),
           ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 400.r,
-                ),
-                child:  ListView(
-                  children: [
-                    Column(
+          onSuccess: (state) => DecoratedBox(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.blue1,
+                  AppColors.blue2,
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: [0, 1],
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: 400.r,
+                    ),
+                    child: ListView(
                       children: [
-                        SizedBox(height: 10.h),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Column(
                           children: [
-                            CustomText(text: "Today", fondSize: 24),
-                            CustomText(text: "Sep, 12", fondSize: 18),
+                            SizedBox(height: 10.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CustomText(text: "Today", fondSize: 24),
+                                CustomText(
+                                  text: DateTime.now().toShort(),
+                                  fondSize: 18,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 35.r),
                           ],
                         ),
-                        SizedBox(height: 35.r),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 190.w,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: const [
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                          CustomButton(
-                              text: "24", clock: "13", path: WeathersIcons.sunCloudy),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomText(fondSize: 24, text: "Next Forecast"),
-                        Image(
-                          image: const AssetImage(AppIcons.calendar),
-                          width: 24.r,
-                          height: 24.r,
+                        SizedBox(
+                          height: 190.w,
+                          child: ValueListenableBuilder<int>(
+                              valueListenable: focused,
+                              builder: (context, value, child) {
+                                return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 8,
+                                  itemBuilder: (context, index) {
+                                    final temp = state.baseModel.list[index];
+                                    return CustomButton(
+                                      isTapped: value == index,
+                                      onTap: () {
+                                        focused.value = index;
+                                      },
+                                      text: temp.main.temp.round().toString(),
+                                      clock: temp.dtTxt
+                                          .toString()
+                                          .substring(11, 13),
+                                      path: temp
+                                          .weather.first.main.weatherToIconPath,
+                                    );
+                                  },
+                                );
+                              }),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20.r),
-                    SizedBox(
-                      height: 250.h,
-                      width: 308.w,
-                      child: ScrollbarTheme(
-                        data: ScrollbarThemeData(
-                          thumbColor: MaterialStateProperty.all(Colors.white),
-                          trackBorderColor: MaterialStateProperty.all(Colors.black),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const CustomText(
+                                fondSize: 24, text: "Next Forecast",),
+                            Image(
+                              image: const AssetImage(AppIcons.calendar),
+                              width: 24.r,
+                              height: 24.r,
+                            ),
+                          ],
                         ),
-                        child: Scrollbar(
-                          controller: controller,
-                          child: ListView(
-                            controller: controller,
-                            children: const [
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
+                        SizedBox(height: 20.r),
+                        SizedBox(
+                          height: 250.h,
+                          width: 308.w,
+                          child: ScrollbarTheme(
+                            data: ScrollbarThemeData(
+                              thumbColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              trackBorderColor:
+                                  MaterialStateProperty.all(Colors.black),
+                            ),
+                            child: Scrollbar(
+                              controller: controller,
+                              child: BlocBuilder<WeatherBloc, WeatherState>(
+                                builder: (context, state) {
+                                  state = state as SuccessState;
+                                  final day = state.baseModel.getDay();
+                                  return ListView.builder(
+                                    controller: controller,
+                                    itemCount: 5,
+                                    itemBuilder: (context, index) {
+                                      final witherMini = day[index];
+                                      return ScrollButton(
+                                        path: witherMini.mini.weatherToIconPath,
+                                        text2: witherMini.dateTime.toShort(),
+                                        text1:
+                                            witherMini.temp.round().toString(),
+                                      );
+                                    },
+                                  );
+                                },
                               ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.r),
+                        Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image(
+                                image: const AssetImage(WeathersIcons.sun),
+                                width: 24.r,
                               ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
-                              ),
-                              ScrollButton(
-                                path: WeathersIcons.sunny,
-                                text2: "Sep, 15",
-                                text1: "34",
+                              const CustomText(
+                                fondSize: 18,
+                                text: "AccuWeather",
                               ),
                             ],
                           ),
-                        ),
-                      ),
+                        )
+                      ],
                     ),
-                    SizedBox(height: 10.r),
-                    Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image(
-                              image: const AssetImage(WeathersIcons.sun),
-                              width: 24.r),
-                          const CustomText(
-                            fondSize: 18,
-                            text: "AccuWeather",
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
+          ),
+          onError: (state) => Center(
+            child: Text(state.message),
           ),
         ),
       ),
     );
   }
+}
+
+extension GetIconPath on String {
+  String get weatherToIconPath => switch (this) {
+        "Clouds" => WeathersIcons.cloud,
+        "Snow" => WeathersIcons.snow,
+        "Clear" => WeathersIcons.clear,
+        "Rain" => WeathersIcons.rain,
+        _ => "",
+      };
 }

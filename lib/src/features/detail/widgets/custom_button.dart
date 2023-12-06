@@ -24,9 +24,9 @@ class ScrollButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomText(fondSize: 18, text: text1),
-            Image(image: AssetImage(path), width: 60.r, height: 60.r),
-            CustomText(fondSize: 18, text:"$text2°"),
+            CustomText(fondSize: 18, text: text2),
+            Image(image: AssetImage(path), width: 50.r, height: 50.r),
+            CustomText(fondSize: 18, text: "$text1°"),
           ],
         ),
       ),

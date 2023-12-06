@@ -9,13 +9,15 @@ class CustomButton extends StatefulWidget {
   final String text;
   final String clock;
   final String path;
+  final void Function() onTap;
   final bool isTapped;
 
   const CustomButton({
     required this.path,
     required this.text,
     required this.clock,
-    this.isTapped = true,
+    required this.onTap,
+    required this.isTapped,
     Key? key,
   }) : super(key: key);
 
@@ -24,23 +26,18 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  bool isTapped = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        isTapped = !isTapped;
-        setState(() {});
-      },
+      onTap: widget.onTap,
       child: Padding(
         padding: EdgeInsets.all(8.w),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: isTapped ? const Color(0x33FFFFFF) : null,
-            border:
-                isTapped ? Border.all(color: AppColors.white, width: 2) : null,
-            borderRadius: isTapped
+            color: widget.isTapped ? const Color(0x33FFFFFF) : null,
+            border: widget.isTapped ? Border.all(color: AppColors.white, width: 2) : null,
+            borderRadius: widget.isTapped
                 ? BorderRadius.all(
                     Radius.circular(20.r),
                   )
@@ -54,8 +51,9 @@ class _CustomButtonState extends State<CustomButton> {
                 CustomText(fondSize: 18, text: "${widget.text} °C"),
                 SizedBox(height: 25.r),
                 Image(
-                  image: const AssetImage(WeathersIcons.sunCloudy),
+                  image: AssetImage(widget.path),
                   width: 34.w,
+                  height: 34.r,
                 ),
                 SizedBox(height: 25.r),
                 CustomText(fondSize: 18, text: "${widget.clock}.00"),

@@ -1,50 +1,3 @@
-/*
-
-    "cod": "200",
-    "message": 0,
-    "cnt": 40,
-    "list": [
-     {
-            "dt": 1701097200,
-            "main": {
-                "temp": 248.44,
-                "feels_like": 243.4,
-                "temp_min": 248.44,
-                "temp_max": 248.44,
-                "pressure": 1043,
-                "sea_level": 1043,
-                "grnd_level": 1000,
-                "humidity": 98,
-                "temp_kf": 0
-            },
-            "weather": [
-                {
-                    "id": 801,
-                    "main": "Clouds",
-                    "description": "few clouds",
-                    "icon": "02n"
-                }
-            ],
-            "clouds": {
-                "all": 13
-            },
-            "wind": {
-                "speed": 1.44,
-                "deg": 343,
-                "gust": 1.3
-            },
-            "visibility": 10000,
-            "pop": 0,
-            "sys": {
-                "pod": "n"
-            },
-            "dt_txt": "2023-11-27 15:00:00"
-        },
-        }
-        ]
-*/
-
-
 class BaseModel {
   String cod;
   int message;
@@ -83,6 +36,37 @@ class BaseModel {
         "list": list.map((e) => e.toJson()),
         "city": city.toJson(),
       };
+
+  List<WeatherMini> getDay() {
+    var currentTime = DateTime.now();
+    List<WeatherMini> result = [];
+    for (int i = 0; i < 5; i++) {
+      List<CitiesModel> miniList = list
+          .where((element) => element.dtTxt!.day == currentTime.day)
+          .toList();
+      num sumTemp = miniList.fold<num>(
+          0, (previousValue, element) => previousValue + element.main.temp);
+      WeatherMini weatherMini = WeatherMini(
+          miniList[miniList.length ~/ 2 + 1].weather.first.main,
+          sumTemp / miniList.length,
+          currentTime);
+      result.add(weatherMini);
+      currentTime = currentTime.add(const Duration(days: 1));
+    }
+    return result;
+  }
+}
+
+class WeatherMini {
+  final String mini;
+  final num temp;
+  final DateTime dateTime;
+
+  WeatherMini(
+    this.mini,
+    this.temp,
+    this.dateTime,
+  );
 }
 
 class CitiesModel {
@@ -125,8 +109,8 @@ class CitiesModel {
         sys: json["sys"] != null
             ? Sys.fromJson(json["sys"] as Map<String, Object?>)
             : null,
-        dtTxt: json["dtTxt"] != null
-            ? DateTime.parse(json["dtTxt"] as String)
+        dtTxt: json["dt_txt"] != null
+            ? DateTime.parse(json["dt_txt"] as String)
             : null,
       );
 
@@ -140,7 +124,7 @@ class CitiesModel {
         "pop": pop,
         "snow": snow?.toJson() ?? {},
         "sys": sys?.toJson(),
-        "dtTxt": dtTxt?.toUtc(),
+        "dt_txt": dtTxt?.toUtc(),
       };
 }
 
@@ -344,46 +328,3 @@ class Coord {
         "lon": lon,
       };
 }
-
-/*
-              {
-            "dt": 1701432000,
-            "main": {
-                "temp": 265.32,
-                "feels_like": 261.45,
-                "temp_min": 265.32,
-                "temp_max": 265.32,
-                "pressure": 1015,
-                "sea_level": 1015,
-                "grnd_level": 976,
-                "humidity": 96,
-                "temp_kf": 0
-            },
-            "weather": [
-                {
-                    "id": 600,
-                    "main": "Snow",
-                    "description": "light snow",
-                    "icon": "13n"
-                }
-            ],
-            "clouds": {
-                "all": 100
-            },
-            "wind": {
-                "speed": 2.08,
-                "deg": 187,
-                "gust": 6.31
-            },
-            "visibility": 140,
-            "pop": 0.56,
-            "snow": {
-                "3h": 0.69
-            },
-            "sys": {
-                "pod": "n"
-            },
-            "dt_txt": "2023-12-01 12:00:00"
-        },
-
- */

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/src/common/constants/weather_icons.dart';
+import 'package:weather_app/src/features/detail/detail_page.dart';
+
+import '../bloc/weather_bloc.dart';
 
 class WeatherIconWidget extends StatelessWidget {
   const WeatherIconWidget({
@@ -8,11 +12,16 @@ class WeatherIconWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(50.0),
+    return Padding(
+      padding: const EdgeInsets.all(50.0),
       child: Center(
-        child: Image(
-          image: AssetImage(WeathersIcons.nightCloud),
+        child: BlocBuilder<WeatherBloc, WeatherState>(
+          builder: (context, state) {
+            state = state as SuccessState;
+            return Image(
+              image: AssetImage(state.baseModel.list.first.weather.first.main.weatherToIconPath),
+            );
+          },
         ),
       ),
     );

@@ -13,7 +13,7 @@ class HomeFooterButton extends StatelessWidget {
         onPressed: () {
           Navigator.pushNamed(context, AppRoute.details);
         },
-        child: const SizedBox.shrink(),
+        child: const Text("Forecast report"),
       ),
     );
   }

@@ -99,7 +99,9 @@ class _MapScreenState extends State<MapScreen> {
               left: 10.r,
               child: SafeArea(
                 child: CustomSearchBar(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   searchKey: searchKey,
                   controller: controller,
                   focusNode: focusNode,

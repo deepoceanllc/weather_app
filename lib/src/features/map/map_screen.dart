@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:weather_app/src/common/models/main_model.dart';
+import 'package:weather_app/src/common/models/point_model.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../common/constants/app_colors.dart';
@@ -92,22 +96,8 @@ class _MapScreenState extends State<MapScreen> {
                     },
                   );
                 }),
-            Positioned(
-              top: 10.r,
-              right: 10.r,
-              left: 10.r,
-              child: SafeArea(
-                child: CustomSearchBar(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  searchKey: searchKey,
-                  controller: controller,
-                  focusNode: focusNode,
-                ),
-              ),
-            ),
-            Positioned(
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 200),
               top: 15.r + MediaQuery.of(context).viewPadding.top + getSize(),
               left: 10.r,
               right: 10.r,
@@ -162,9 +152,10 @@ class _MapScreenState extends State<MapScreen> {
                               itemCount: state.mapItems.length,
                               itemBuilder: (context, index) {
                                 final item = state.mapItems[index];
+                                PointModel weather = PointModel.fromMap(jsonDecode(item));
                                 return ListTile(
                                   title: Text(
-                                    item,
+                                    weather.name,
                                   ),
                                 );
                               },
@@ -174,6 +165,21 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                     );
                   }),
+            ),
+            Positioned(
+              top: 10.r,
+              right: 10.r,
+              left: 10.r,
+              child: SafeArea(
+                child: CustomSearchBar(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  searchKey: searchKey,
+                  controller: controller,
+                  focusNode: focusNode,
+                ),
+              ),
             ),
             Positioned(
               bottom: 25.h,

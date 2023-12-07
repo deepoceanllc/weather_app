@@ -19,6 +19,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Weather App',
           theme: ThemeData(
+            useMaterial3: true,
             fontFamily: "Overpass",
           ),
           routes: AppRoute.routes,

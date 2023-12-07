@@ -37,6 +37,7 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
                 width: 160,
                 height: 200,
               ),
+
               surfaceTintColor: Colors.transparent,
               position: PopupMenuPosition.under,
               color: Colors.transparent,
@@ -66,9 +67,7 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
                       PointModel.fromMap(jsonDecode(items.elementAt(index)));
                   return PopupMenuItem(
                     onTap: () {
-                      context
-                          .read<WeatherBloc>()
-                          .add(GetCiti(point: pointModel));
+                      context.read<WeatherBloc>().add(GetCiti(point: pointModel));
                     },
                     child: LocationItemWidget(location: pointModel.name),
                   );

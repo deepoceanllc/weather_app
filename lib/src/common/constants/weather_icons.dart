@@ -1,5 +1,6 @@
 abstract class WeathersIcons {
   static const _path = "assets/weathers";
+  static const cloudy = "$_path/cloudy.png";
   static const cloud = "$_path/cloud.png";
   static const rain = "$_path/rainly_cloud.png";
   static const sunCloudy = "$_path/sun_cloudy.png";

@@ -47,7 +47,9 @@ class _DetailPage extends State<DetailPage> {
         leading: Padding(
           padding: EdgeInsets.only(left: 10.w),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: SizedBox(
               width: 100.w,
               height: 70.h,
@@ -122,7 +124,7 @@ class _DetailPage extends State<DetailPage> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 35.r),
+                            SizedBox(height: 20.r),
                           ],
                         ),
                         SizedBox(
@@ -182,9 +184,9 @@ class _DetailPage extends State<DetailPage> {
                                   final day = state.baseModel.getDay();
                                   return ListView.builder(
                                     controller: controller,
-                                    itemCount: 5,
+                                    itemCount: day.length,
                                     itemBuilder: (context, index) {
-                                      final witherMini = day[index];
+                                      final witherMini = day.elementAt(index);
                                       return ScrollButton(
                                         path: witherMini.mini.weatherToIconPath,
                                         text2: witherMini.dateTime.toShort(),

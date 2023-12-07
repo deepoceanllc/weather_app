@@ -3,4 +3,5 @@ abstract final class AppLotties {
   static const first = "$_path/first.json";
   static const second = "$_path/second.json";
   static const third = "$_path/third.json";
+  static const animation = "$_path/animation.json";
 }

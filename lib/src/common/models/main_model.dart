@@ -44,12 +44,14 @@ class BaseModel {
       List<CitiesModel> miniList = list
           .where((element) => element.dtTxt!.day == currentTime.day)
           .toList();
+      print(miniList.length);
       num sumTemp = miniList.fold<num>(
           0, (previousValue, element) => previousValue + element.main.temp);
       WeatherMini weatherMini = WeatherMini(
-          miniList[miniList.length ~/ 2 + 1].weather.first.main,
-          sumTemp / miniList.length,
-          currentTime);
+        mini: miniList[miniList.length~/2].weather.first.main,
+        temp: sumTemp / miniList.length,
+        dateTime:  currentTime,
+      );
       result.add(weatherMini);
       currentTime = currentTime.add(const Duration(days: 1));
     }
@@ -62,11 +64,27 @@ class WeatherMini {
   final num temp;
   final DateTime dateTime;
 
-  WeatherMini(
-    this.mini,
-    this.temp,
-    this.dateTime,
-  );
+  WeatherMini({
+    required this.mini,
+    required this.temp,
+    required this.dateTime,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'mini': mini,
+      'temp': temp,
+      'dateTime': dateTime,
+    };
+  }
+
+  factory WeatherMini.fromMap(Map<String, dynamic> map) {
+    return WeatherMini(
+      mini: map['mini'] as String,
+      temp: map['temp'] as num,
+      dateTime: map['dateTime'] as DateTime,
+    );
+  }
 }
 
 class CitiesModel {

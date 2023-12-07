@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 part 'map_event.dart';
-
 part 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
@@ -28,7 +27,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   }
 
   Future<List<String>> getLocalCities() async {
-    print("dsdsd");
     return (await getStorage()).getStringList('cities') ?? [];
   }
 
@@ -42,8 +40,8 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       if (event.text.isEmpty) {
         await _getCityStorage(emit);
       } else {
-       final result = await _search(event.text);
-       emit(MapSuccess(result));
+        final result = await _search(event.text);
+        emit(MapSuccess(result));
       }
     } catch (e) {
       emit(MapError(e.toString(), null));
@@ -52,9 +50,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   Future<void> _getCityStorage(Emitter<MapState> emit) async {
     try {
-      print("object");
       final cities = await getLocalCities();
-      print("-----");
       emit(MapInitial(cities));
     } catch (e) {
       emit(MapError(e.toString(), null));
@@ -77,6 +73,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     );
 
     final result = await resultWithSession.result;
-   return result.items ?? [];
+    return result.items ?? [];
   }
 }

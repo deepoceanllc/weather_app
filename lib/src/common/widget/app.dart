@@ -20,13 +20,12 @@ class App extends StatelessWidget {
           title: 'Weather App',
           theme: ThemeData(
             fontFamily: "Overpass",
-            useMaterial3: true,
           ),
           routes: AppRoute.routes,
           builder: (context, child) => BlocProvider<WeatherBloc>(
-              create: (context) => WeatherBloc()..add(GetData()),
-              child: child,
-            ),
+            create: (context) => WeatherBloc()..add(GetData()),
+            child: child,
+          ),
         );
       },
     );

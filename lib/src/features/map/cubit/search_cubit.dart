@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../common/models/point_model.dart';
@@ -20,7 +19,10 @@ class SearchCubit extends Cubit<SearchState> {
       );
 
       PointModel pointModel = PointModel(
-        lat: point.latitude, lon: point.longitude, name: item.name,);
+        lat: point.latitude,
+        lon: point.longitude,
+        name: item.name,
+      );
       final mapObject = _createObject(point: point, name: item.name);
       emit(SearchSuccess([mapObject], pointModel));
       await _moveAt(point, controller);
@@ -28,7 +30,6 @@ class SearchCubit extends Cubit<SearchState> {
       emit(SearchErrorState(e.toString()));
     }
   }
-
 
   Future<void> _moveAt(Point point, YandexMapController controller) async {
     await controller.moveCamera(
@@ -44,14 +45,8 @@ class SearchCubit extends Cubit<SearchState> {
     return PlacemarkMapObject(
       mapId: _mapObjectId,
       point: point,
-      onTap: (PlacemarkMapObject self, Point point) =>
-          print('Tapped me at $point'),
       opacity: 0.7,
       direction: 0,
-      // isDraggable: false,
-      // onDragStart: (_) => print('Drag start'),
-      // onDrag: (_, Point point) => print('Drag at point $point'),
-      // onDragEnd: (_) => print('Drag end'),
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(
           image: BitmapDescriptor.fromAssetImage('assets/icons/img.png'),

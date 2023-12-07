@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:weather_app/src/common/constants/app_colors.dart';
 import 'package:weather_app/src/common/routes/app_routes.dart';
 import 'package:weather_app/src/features/home/bloc/weather_bloc.dart';
 import 'package:weather_app/src/features/home/widgets/location_item_widget.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../common/models/point_model.dart';
 
@@ -31,7 +29,8 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
           builder: (context, state) {
             state = state as SuccessState;
             final items = WeatherBloc.db.getStringList("cities") ?? [];
-            PointModel model = PointModel.fromMap(jsonDecode(WeatherBloc.db.getString("citi") as String));
+            PointModel model = PointModel.fromMap(
+                jsonDecode(WeatherBloc.db.getString("citi") as String));
             return PopupMenuButton(
               elevation: 1,
               constraints: const BoxConstraints.expand(
@@ -43,19 +42,19 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
               color: Colors.transparent,
               itemBuilder: (context) => List.generate(
                 items.length + 1,
-                    (index) {
+                (index) {
                   if (index == items.length) {
                     return PopupMenuItem(
                       onTap: () async {
-                        final point = await Navigator.pushNamed(
-                            context, AppRoute.map);
+                        final point =
+                            await Navigator.pushNamed(context, AppRoute.map);
                         if (point != null && mounted) {
                           context.read<WeatherBloc>().add(
-                            GetCiti(
-                              point: point as PointModel,
-                              isNew: true,
-                            ),
-                          );
+                                GetCiti(
+                                  point: point as PointModel,
+                                  isNew: true,
+                                ),
+                              );
                         }
                       },
                       child: const LocationItemWidget(
@@ -63,10 +62,13 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
                       ),
                     );
                   }
-                  PointModel pointModel = PointModel.fromMap(jsonDecode(items.elementAt(index)));
+                  PointModel pointModel =
+                      PointModel.fromMap(jsonDecode(items.elementAt(index)));
                   return PopupMenuItem(
                     onTap: () {
-                      context.read<WeatherBloc>().add(GetCiti(point: pointModel));
+                      context
+                          .read<WeatherBloc>()
+                          .add(GetCiti(point: pointModel));
                     },
                     child: LocationItemWidget(location: pointModel.name),
                   );

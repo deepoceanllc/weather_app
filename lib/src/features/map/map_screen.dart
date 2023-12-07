@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +6,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../common/constants/app_colors.dart';
 import 'bloc/map_bloc.dart';
 import 'cubit/search_cubit.dart';
-import 'widgets/custom_searchBar.dart';
+import 'widgets/custom_search_bar.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

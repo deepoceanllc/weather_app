@@ -8,12 +8,10 @@ import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/src/common/models/main_model.dart';
 import 'package:weather_app/src/common/models/point_model.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../repository/cities_repository.dart';
 
 part 'weather_event.dart';
-
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
@@ -53,7 +51,8 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         ]);
       } else {
         PointModel pointModel = PointModel.fromMap(jsonDecode(res));
-        citi = await repository.getCitiesPosition(pointModel.lat, pointModel.lon);
+        citi =
+            await repository.getCitiesPosition(pointModel.lat, pointModel.lon);
       }
       emit(SuccessState(citi));
     } on DioException catch (e) {
@@ -66,14 +65,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     try {
       if (event.isNew) {
         final cities = db.getStringList("cities") ?? [];
-        db.setStringList("cities", cities..add(jsonEncode(event.point.toMap())));
-        print(' -------------------------------');
-        print(event.point.lat);
-        print(event.point.lon);
+        db.setStringList(
+            "cities", cities..add(jsonEncode(event.point.toMap())));
       }
       await db.setString("citi", jsonEncode(event.point.toMap()));
-      baseModel = await repository.getCitiesPosition(
-          event.point.lat, event.point.lon);
+      baseModel =
+          await repository.getCitiesPosition(event.point.lat, event.point.lon);
       emit(SuccessState(baseModel));
     } on DioException catch (e) {
       emit(ErrorState(e.message!));

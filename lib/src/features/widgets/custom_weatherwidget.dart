@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/src/features/widgets/custom_text.dart';
 
 import '../../common/constants/app_colors.dart';
-import '../../common/constants/weather_icons.dart';
 
 class CustomButton extends StatefulWidget {
   final String text;
@@ -26,7 +25,6 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -36,7 +34,9 @@ class _CustomButtonState extends State<CustomButton> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: widget.isTapped ? const Color(0x33FFFFFF) : null,
-            border: widget.isTapped ? Border.all(color: AppColors.white, width: 2) : null,
+            border: widget.isTapped
+                ? Border.all(color: AppColors.white, width: 2)
+                : null,
             borderRadius: widget.isTapped
                 ? BorderRadius.all(
                     Radius.circular(20.r),

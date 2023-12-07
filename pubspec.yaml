@@ -22,6 +22,7 @@ dependencies:
   intl: ^0.18.1
 #  meta: ^1.10.0
   lottie: ^2.7.0
+  meta: ^1.10.0
   shared_preferences: ^2.2.2
   yandex_mapkit: ^3.3.3
 

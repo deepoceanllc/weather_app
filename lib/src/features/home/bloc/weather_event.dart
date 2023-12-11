@@ -7,16 +7,17 @@ class GetData extends WeatherEvent {
   @override
   T map<T>({
     required T Function(GetData event) onGetData,
-    required T Function(GetCiti event) onGetCiti,
+    required T Function(GetCity event) onGetCity,
+    required T Function(RefreshData event) onRefreshData,
   }) =>
       onGetData(this);
 }
 
-class GetCiti extends WeatherEvent {
+class GetCity extends WeatherEvent {
   final PointModel point;
   final bool isNew;
 
-  GetCiti({
+  GetCity({
     required this.point,
     this.isNew = false,
   });
@@ -24,13 +25,26 @@ class GetCiti extends WeatherEvent {
   @override
   T map<T>({
     required T Function(GetData event) onGetData,
-    required T Function(GetCiti event) onGetCiti,
-  }) => onGetCiti(this);
+    required T Function(GetCity event) onGetCity,
+    required T Function(RefreshData event) onRefreshData,
+  }) =>
+      onGetCity(this);
+}
+
+class RefreshData extends WeatherEvent {
+  @override
+  T map<T>({
+    required T Function(GetData event) onGetData,
+    required T Function(GetCity event) onGetCity,
+    required T Function(RefreshData event) onRefreshData,
+  }) =>
+      onRefreshData(this);
 }
 
 mixin _WeatherEventPatternMatcher {
   T map<T>({
     required T Function(GetData event) onGetData,
-    required T Function(GetCiti event) onGetCiti,
+    required T Function(GetCity event) onGetCity,
+    required T Function(RefreshData event) onRefreshData,
   });
 }

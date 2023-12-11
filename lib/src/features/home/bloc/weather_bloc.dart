@@ -6,15 +6,17 @@ import 'package:dio/dio.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/src/common/extensions/extensions.dart';
 import 'package:weather_app/src/common/models/main_model.dart';
 import 'package:weather_app/src/common/models/point_model.dart';
-
-import '../../repository/cities_repository.dart';
+import 'package:weather_app/src/common/repository/cities_repository.dart';
 
 part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
+  static const cityKey = "city";
+  static const citiesKey = "cities";
   static late final SharedPreferences db;
   ICitiesRepository repository = CitiesRepository();
 
@@ -22,58 +24,85 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     on<WeatherEvent>(
       (event, emit) => event.map(
         onGetData: (event) => _getData(event, emit),
-        onGetCiti: (event) => _getCiti(event, emit),
+        onGetCity: (event) => _getCiti(event, emit),
+        onRefreshData: (event) => _getRefreshData(event, emit),
       ),
     );
   }
 
-  Future<void> _getData(GetData event, Emitter<WeatherState> emit) async {
+  Future<void> _getData(
+    GetData event,
+    Emitter<WeatherState> emit,
+  ) async {
     try {
-      final BaseModel citi;
       db = await SharedPreferences.getInstance();
       // db.clear();
-      String? res = db.getString("citi");
-
-      if (res == null) {
-        Position position = await Geolocator.getCurrentPosition();
-        citi = await repository.getCitiesPosition(
-            position.latitude, position.longitude);
-        String point = jsonEncode(
-          PointModel(
-            lat: position.latitude,
-            lon: position.longitude,
-            name: citi.city.name,
-          ).toMap(),
-        );
-        await Future.wait([
-          db.setString("citi", point),
-          db.setStringList("cities", [point]),
-        ]);
-      } else {
-        PointModel pointModel = PointModel.fromMap(jsonDecode(res));
-        citi =
-            await repository.getCitiesPosition(pointModel.lat, pointModel.lon);
-      }
-      emit(SuccessState(citi));
+      final city = await _getLocationData();
+      emit(SuccessState(city));
     } on DioException catch (e) {
-      emit(ErrorState(e.message!));
+      emit(ErrorState(e.toMessage()));
     }
   }
 
-  Future<void> _getCiti(GetCiti event, Emitter<WeatherState> emit) async {
+  Future<void> _getCiti(
+    GetCity event,
+    Emitter<WeatherState> emit,
+  ) async {
     final BaseModel baseModel;
     try {
       if (event.isNew) {
-        final cities = db.getStringList("cities") ?? [];
+        final cities = db.getStringList(citiesKey) ?? [];
         db.setStringList(
-            "cities", cities..add(jsonEncode(event.point.toMap())));
+          citiesKey,
+          cities..add(jsonEncode(event.point.toMap())),
+        );
       }
-      await db.setString("citi", jsonEncode(event.point.toMap()));
-      baseModel =
-          await repository.getCitiesPosition(event.point.lat, event.point.lon);
+      await db.setString(cityKey, jsonEncode(event.point.toMap()));
+      baseModel = await repository.getCitiesPosition(
+        event.point.lat,
+        event.point.lon,
+      );
       emit(SuccessState(baseModel));
     } on DioException catch (e) {
-      emit(ErrorState(e.message!));
+      emit(ErrorState(e.toMessage()));
     }
+  }
+
+  Future<void> _getRefreshData(
+    RefreshData event,
+    Emitter<WeatherState> emit,
+  ) async {
+    try {
+      emit(LoadingState());
+      final city = await _getLocationData();
+      emit(SuccessState(city));
+    } on DioException catch (e) {
+      emit(ErrorState(e.toMessage()));
+    }
+  }
+
+  Future<BaseModel> _getLocationData() async {
+    String? res = db.getString(cityKey);
+    final BaseModel city;
+    if (res == null) {
+      Position position = await Geolocator.getCurrentPosition();
+      city = await repository.getCitiesPosition(
+          position.latitude, position.longitude);
+      String point = jsonEncode(
+        PointModel(
+          lat: position.latitude,
+          lon: position.longitude,
+          name: city.city.name,
+        ).toMap(),
+      );
+      await Future.wait([
+        db.setString(cityKey, point),
+        db.setStringList(citiesKey, [point]),
+      ]);
+    } else {
+      PointModel pointModel = PointModel.fromMap(jsonDecode(res));
+      city = await repository.getCitiesPosition(pointModel.lat, pointModel.lon);
+    }
+    return city;
   }
 }

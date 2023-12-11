@@ -33,7 +33,7 @@ class CitiesRepository implements ICitiesRepository {
   @override
   Future<BaseModel> getCities(String query) async {
     String response = await citiesServices.request(
-      ApiConst.allPath,
+      ApiConst.mainPath,
       queryParameters: ApiConst.getCiti(query),
     );
     return BaseModel.fromJson(jsonDecode(response));
@@ -42,7 +42,7 @@ class CitiesRepository implements ICitiesRepository {
   @override
   Future<BaseModel> getCitiesPosition(double lat, double lon) async {
     String response = await citiesServices.request(
-      ApiConst.allPath,
+      ApiConst.mainPath,
       queryParameters: ApiConst.getCitiPosition(lat, lon),
     );
     return BaseModel.fromJson(jsonDecode(response));

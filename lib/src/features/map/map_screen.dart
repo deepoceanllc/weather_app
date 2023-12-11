@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weather_app/src/common/models/main_model.dart';
 import 'package:weather_app/src/common/models/point_model.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -105,10 +104,10 @@ class _MapScreenState extends State<MapScreen> {
                   valueListenable: isFocused,
                   builder: (context, value, child) {
                     return AnimatedContainer(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.black26,
                         borderRadius: BorderRadius.all(
-                          Radius.circular(10),
+                          Radius.circular(20.r),
                         ),
                       ),
                       duration: const Duration(milliseconds: 200),
@@ -133,10 +132,9 @@ class _MapScreenState extends State<MapScreen> {
                                   },
                                   title: Text(
                                     item.name,
-                                  ),
-                                  subtitle: Text(
-                                    item.toponymMetadata!.balloonPoint.latitude
-                                        .toString(),
+                                    style: TextStyle(
+                                      fontSize: 16.sp,
+                                    ),
                                   ),
                                 );
                               },
@@ -152,7 +150,8 @@ class _MapScreenState extends State<MapScreen> {
                               itemCount: state.mapItems.length,
                               itemBuilder: (context, index) {
                                 final item = state.mapItems[index];
-                                PointModel weather = PointModel.fromMap(jsonDecode(item));
+                                PointModel weather =
+                                    PointModel.fromMap(jsonDecode(item));
                                 return ListTile(
                                   title: Text(
                                     weather.name,
@@ -200,7 +199,7 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.pop(context, data.pointModel);
                         },
                         child: const Text(
-                          "Qo'shish",
+                          "Add",
                         ),
                       );
                     }

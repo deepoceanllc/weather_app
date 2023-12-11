@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/src/common/routes/app_routes.dart';
+import 'package:weather_app/src/common/services/localization/app_localizations.dart';
+import 'package:weather_app/src/common/themes/app_theme.dart';
 
 import '../../features/home/bloc/weather_bloc.dart';
 
@@ -18,11 +20,11 @@ class App extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Weather App',
-          theme: ThemeData(
-            useMaterial3: true,
-            fontFamily: "Overpass",
-          ),
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
           routes: AppRoute.routes,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           builder: (context, child) => BlocProvider<WeatherBloc>(
             create: (context) => WeatherBloc()..add(GetData()),
             child: child,

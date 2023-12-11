@@ -12,6 +12,12 @@
 @import geolocator_apple;
 #endif
 
+#if __has_include(<open_settings/OpenSettingsPlugin.h>)
+#import <open_settings/OpenSettingsPlugin.h>
+#else
+@import open_settings;
+#endif
+
 #if __has_include(<shared_preferences_foundation/SharedPreferencesPlugin.h>)
 #import <shared_preferences_foundation/SharedPreferencesPlugin.h>
 #else
@@ -28,6 +34,7 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [GeolocatorPlugin registerWithRegistrar:[registry registrarForPlugin:@"GeolocatorPlugin"]];
+  [OpenSettingsPlugin registerWithRegistrar:[registry registrarForPlugin:@"OpenSettingsPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
   [YandexMapkitPlugin registerWithRegistrar:[registry registrarForPlugin:@"YandexMapkitPlugin"]];
 }

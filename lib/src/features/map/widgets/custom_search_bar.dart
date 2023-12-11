@@ -1,19 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/common/constants/app_colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../common/constants/app_colors.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final GlobalKey searchKey;
   final VoidCallback onTap;
   final TextEditingController controller;
 
   const CustomSearchBar({
     Key? key,
-    required this.focusNode,
     required this.controller,
     required this.searchKey,
     required this.onTap,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -23,21 +25,37 @@ class CustomSearchBar extends StatefulWidget {
 class _CustomSearchBarState extends State<CustomSearchBar> {
   @override
   Widget build(BuildContext context) {
-    return SearchBar(
-      trailing: [
-        IconButton(
-          icon: const Icon(CupertinoIcons.clear),
-          onPressed: () {
-            widget.controller.clear();
-          },
-        ),
-      ],
-      leading:
-          BackButton(onPressed: widget.onTap, color: AppColors.searchColor),
-      hintText: "Search here",
+    return TextField(
       key: widget.searchKey,
-      focusNode: widget.focusNode,
       controller: widget.controller,
+      focusNode: widget.focusNode,
+      decoration: InputDecoration(
+        fillColor: Colors.grey.shade300.withOpacity(0.8),
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.r)),
+          borderSide: BorderSide.none,
+        ),
+        suffixIconConstraints: const BoxConstraints(
+          maxWidth: 60,
+        ),
+        suffixIcon: Center(
+          child: IconButton(
+            icon: const Icon(CupertinoIcons.clear),
+            onPressed: () {
+              widget.controller.clear();
+            },
+          ),
+        ),
+        prefixIcon: Center(
+          child:
+              BackButton(onPressed: widget.onTap, color: AppColors.searchColor),
+        ),
+        prefixIconConstraints: const BoxConstraints(
+          maxWidth: 50,
+        ),
+        hintText: "Search here",
+      ),
     );
   }
 }

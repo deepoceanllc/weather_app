@@ -1,18 +1,10 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-<<<<<<< HEAD
-export "FLUTTER_ROOT=C:\Users\ZAFARBEK\Devalopmen\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\home_task\weather_app"
-export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib\main.dart"
-export "FLUTTER_BUILD_DIR=ios"
-=======
 export "FLUTTER_ROOT=C:\development\flutter"
 export "FLUTTER_APPLICATION_PATH=C:\Users\Murodjon\StudioProjects\weather_app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
->>>>>>> origin/farqi_yoq
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"
 export "DART_OBFUSCATION=false"

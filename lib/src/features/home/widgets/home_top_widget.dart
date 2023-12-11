@@ -9,6 +9,7 @@ import 'package:weather_app/src/common/routes/app_routes.dart';
 import 'package:weather_app/src/features/home/bloc/weather_bloc.dart';
 import 'package:weather_app/src/features/home/widgets/location_item_widget.dart';
 
+import '../../../common/constants/app_icons.dart';
 import '../../../common/models/point_model.dart';
 
 class HomeTopWidget extends StatefulWidget {
@@ -21,98 +22,108 @@ class HomeTopWidget extends StatefulWidget {
 class _HomeTopWidgetState extends State<HomeTopWidget> {
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 160),
-        child: BlocBuilder<WeatherBloc, WeatherState>(
-          builder: (context, state) {
-            state = state as SuccessState;
-            final items = WeatherBloc.db.getStringList("cities") ?? [];
-            PointModel model = PointModel.fromMap(
-                jsonDecode(WeatherBloc.db.getString("citi") as String));
-            return PopupMenuButton(
-              elevation: 1,
-              constraints: const BoxConstraints.expand(
-                width: 160,
-                height: 200,
-              ),
-
-              surfaceTintColor: Colors.transparent,
-              position: PopupMenuPosition.under,
-              color: Colors.transparent,
-              itemBuilder: (context) => List.generate(
-                items.length + 1,
-                (index) {
-                  if (index == items.length) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 160),
+          child: BlocBuilder<WeatherBloc, WeatherState>(
+            builder: (context, state) {
+              state = state as SuccessState;
+              final items = WeatherBloc.db.getStringList("cities") ?? [];
+              PointModel model = PointModel.fromMap(jsonDecode(
+                  WeatherBloc.db.getString(WeatherBloc.cityKey) as String));
+              return PopupMenuButton(
+                elevation: 1,
+                constraints: const BoxConstraints.expand(
+                  width: 160,
+                  height: 200,
+                ),
+                surfaceTintColor: Colors.transparent,
+                position: PopupMenuPosition.under,
+                color: Colors.transparent,
+                itemBuilder: (context) => List.generate(
+                  items.length + 1,
+                  (index) {
+                    if (index == items.length) {
+                      return PopupMenuItem(
+                        onTap: () async {
+                          final point =
+                              await Navigator.pushNamed(context, AppRoute.map);
+                          if (point != null && mounted) {
+                            context.read<WeatherBloc>().add(
+                                  GetCity(
+                                    point: point as PointModel,
+                                    isNew: true,
+                                  ),
+                                );
+                          }
+                        },
+                        child: const LocationItemWidget(
+                          location: "Add new location",
+                        ),
+                      );
+                    }
+                    PointModel pointModel =
+                        PointModel.fromMap(jsonDecode(items.elementAt(index)));
                     return PopupMenuItem(
-                      onTap: () async {
-                        final point =
-                            await Navigator.pushNamed(context, AppRoute.map);
-                        if (point != null && mounted) {
-                          context.read<WeatherBloc>().add(
-                                GetCiti(
-                                  point: point as PointModel,
-                                  isNew: true,
-                                ),
-                              );
-                        }
+                      onTap: () {
+                        context
+                            .read<WeatherBloc>()
+                            .add(GetCity(point: pointModel));
                       },
-                      child: const LocationItemWidget(
-                        location: "Add new location",
-                      ),
+                      child: LocationItemWidget(location: pointModel.name),
                     );
-                  }
-                  PointModel pointModel =
-                      PointModel.fromMap(jsonDecode(items.elementAt(index)));
-                  return PopupMenuItem(
-                    onTap: () {
-                      context.read<WeatherBloc>().add(GetCiti(point: pointModel));
-                    },
-                    child: LocationItemWidget(location: pointModel.name),
-                  );
-                },
-              ),
-              icon: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: SvgPicture.asset(
-                      "assets/icons/location.svg",
-                      width: 24,
-                      height: 24,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Center(
-                      child: Text(
-                        model.name,
-                        style: const TextStyle(
-                          color: AppColors.white,
-                        ),
-                        overflow: TextOverflow.ellipsis,
+                  },
+                ),
+                icon: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: SvgPicture.asset(
+                        AppIcons.location,
+                        width: 24,
+                        height: 24,
                       ),
                     ),
-                  ),
-                  const Expanded(
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 3),
-                        child: Icon(
-                          CupertinoIcons.chevron_down,
-                          color: AppColors.white,
-                          size: 15,
+                    Expanded(
+                      flex: 3,
+                      child: Center(
+                        child: Text(
+                          model.name,
+                          style: const TextStyle(
+                            color: AppColors.white,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                    const Expanded(
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 3),
+                          child: Icon(
+                            CupertinoIcons.chevron_down,
+                            color: AppColors.white,
+                            size: 15,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
-      ),
+        IconButton(
+          onPressed: () => context.read<WeatherBloc>().add(RefreshData()),
+          icon: const Icon(
+            Icons.refresh,
+            color: AppColors.white,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -3,15 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weather_app/src/common/constants/app_lotties.dart';
-import 'package:weather_app/src/common/models/main_model.dart';
+import 'package:weather_app/src/features/home/bloc/weather_bloc.dart';
+import 'package:weather_app/src/features/home/widgets/custom_dialog.dart';
 import 'package:weather_app/src/features/home/widgets/home_footer_button.dart';
 import 'package:weather_app/src/features/home/widgets/home_top_widget.dart';
 import 'package:weather_app/src/features/home/widgets/weather_icon_widget.dart';
 import 'package:weather_app/src/features/home/widgets/weather_status_widget.dart';
-import 'package:weather_app/src/features/repository/cities_repository.dart';
 import 'package:weather_app/src/features/widgets/app_background.dart';
-
-import 'bloc/weather_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,21 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  late CitiesRepository repository;
-  BaseModel? baseModel;
-
-  @override
-  void initState() {
-    repository = CitiesRepository();
-    getCitiess();
-    super.initState();
-  }
-
-  void getCitiess() async {
-    baseModel = await repository.getCities("London");
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,11 +53,7 @@ class _HomePage extends State<HomePage> {
                 ),
               );
             },
-            onError: (state) => Center(
-              child: Text(
-                state.message,
-              ),
-            ),
+            onError: (state) => CustomDialog(state: state),
           ),
         ),
       ),

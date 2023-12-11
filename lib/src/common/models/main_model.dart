@@ -44,13 +44,12 @@ class BaseModel {
       List<CitiesModel> miniList = list
           .where((element) => element.dtTxt!.day == currentTime.day)
           .toList();
-      print(miniList.length);
       num sumTemp = miniList.fold<num>(
           0, (previousValue, element) => previousValue + element.main.temp);
       WeatherMini weatherMini = WeatherMini(
-        mini: miniList[miniList.length~/2].weather.first.main,
+        mini: miniList[miniList.length ~/ 2].weather.first.main,
         temp: sumTemp / miniList.length,
-        dateTime:  currentTime,
+        dateTime: currentTime,
       );
       result.add(weatherMini);
       currentTime = currentTime.add(const Duration(days: 1));

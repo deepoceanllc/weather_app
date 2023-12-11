@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:weather_app/src/features/home/widgets/weather_status_widget.dart';
+import 'package:weather_app/src/features/settings/settings_page.dart';
 import 'package:weather_app/src/features/widgets/custom_weatherwidget.dart';
 
 import '../../common/constants/app_colors.dart';
@@ -38,7 +39,7 @@ class _DetailPage extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.blue1,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         scrolledUnderElevation: 0,
@@ -75,7 +76,14 @@ class _DetailPage extends State<DetailPage> {
           Padding(
             padding: EdgeInsets.only(right: 10.w),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsPage(),
+                  ),
+                );
+              },
               icon: Image(
                 width: 24.w,
                 image: const AssetImage(WeathersIcons.settings),
@@ -90,11 +98,11 @@ class _DetailPage extends State<DetailPage> {
             child: CircularProgressIndicator(),
           ),
           onSuccess: (state) => DecoratedBox(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.blue1,
-                  AppColors.blue2,
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.secondary,
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -157,7 +165,9 @@ class _DetailPage extends State<DetailPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const CustomText(
-                                fondSize: 24, text: "Next Forecast",),
+                              fondSize: 24,
+                              text: "Next Forecast",
+                            ),
                             Image(
                               image: const AssetImage(AppIcons.calendar),
                               width: 24.r,

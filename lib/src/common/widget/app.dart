@@ -6,6 +6,7 @@ import 'package:weather_app/src/common/services/localization/app_localizations.d
 import 'package:weather_app/src/common/themes/app_theme.dart';
 
 import '../../features/home/bloc/weather_bloc.dart';
+import 'theme_bloc/theme_bloc.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -17,17 +18,29 @@ class App extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Weather App',
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
-          routes: AppRoute.routes,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          builder: (context, child) => BlocProvider<WeatherBloc>(
-            create: (context) => WeatherBloc()..add(GetData()),
-            child: child,
+        return BlocProvider(
+          create: (context) => ThemeBloc(),
+          child: BlocBuilder<ThemeBloc, ThemeState>(
+            builder: (context, state) {
+              state = state as SuccessThemeState;
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Weather App',
+                theme: AppTheme.light,
+                darkTheme: AppTheme.dark,
+                routes: AppRoute.routes,
+                themeMode: state.getTheme(),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                builder: (context, child) =>
+                    BlocProvider<WeatherBloc>(
+                      create: (context) =>
+                      WeatherBloc()
+                        ..add(GetData()),
+                      child: child,
+                    ),
+              );
+            },
           ),
         );
       },

@@ -15,6 +15,7 @@ class HomeFooterButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           elevation: 8,
           foregroundColor: AppColors.searchColor,
+          backgroundColor: AppColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15.r)),
           ),
@@ -25,7 +26,12 @@ class HomeFooterButton extends StatelessWidget {
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Forecast report"),
+            Text(
+              "Forecast report",
+              style: TextStyle(
+                color: AppColors.darkBlue1,
+              ),
+            ),
             Icon(
               Icons.chevron_right,
               color: AppColors.searchColor,

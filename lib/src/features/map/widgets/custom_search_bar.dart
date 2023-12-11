@@ -42,9 +42,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         suffixIcon: Center(
           child: IconButton(
             icon: const Icon(CupertinoIcons.clear),
-            onPressed: () {
-              widget.controller.clear();
-            },
+            onPressed: () => widget.controller.clear(),
           ),
         ),
         prefixIcon: Center(

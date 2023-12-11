@@ -7,6 +7,8 @@ import 'package:weather_app/src/common/models/point_model.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../common/constants/app_colors.dart';
+import '../../common/widget/theme_bloc/theme_bloc.dart';
+import '../home/bloc/weather_bloc.dart';
 import 'bloc/map_bloc.dart';
 import 'cubit/search_cubit.dart';
 import 'widgets/custom_search_bar.dart';
@@ -88,10 +90,16 @@ class _MapScreenState extends State<MapScreen> {
                       child: Text("Error"),
                     );
                   }
-                  return YandexMap(
-                    mapObjects: data?.markers ?? [],
-                    onMapCreated: (controller) {
-                      _controller = controller;
+                  return BlocBuilder<ThemeBloc, ThemeState>(
+                    builder: (context, state) {
+                      state = state as SuccessThemeState;
+                      return YandexMap(
+                        nightModeEnabled: state.isDark,
+                        mapObjects: data?.markers ?? [],
+                        onMapCreated: (controller) {
+                          _controller = controller;
+                        },
+                      );
                     },
                   );
                 }),

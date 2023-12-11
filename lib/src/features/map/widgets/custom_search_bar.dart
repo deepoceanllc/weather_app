@@ -41,7 +41,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         ),
         suffixIcon: Center(
           child: IconButton(
-            icon: const Icon(CupertinoIcons.clear),
+            icon: const Icon(CupertinoIcons.clear,color: AppColors.darkBlue1,),
             onPressed: () {
               widget.controller.clear();
             },
@@ -49,11 +49,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         ),
         prefixIcon: Center(
           child:
-              BackButton(onPressed: widget.onTap, color: AppColors.searchColor),
+              BackButton(onPressed: widget.onTap, color: AppColors.darkBlue1),
         ),
         prefixIconConstraints: const BoxConstraints(
           maxWidth: 50,
         ),
+        hintStyle: TextStyle(color: AppColors.darkBlue1),
         hintText: "Search here",
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/common/constants/app_colors.dart';
 
 class AppBackground extends StatelessWidget {
   const AppBackground({
@@ -23,7 +22,7 @@ class AppBackground extends StatelessWidget {
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0, 1],
+            stops: const [0, 1],
           ),
         ),
         child: SafeArea(

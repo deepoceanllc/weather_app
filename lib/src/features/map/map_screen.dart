@@ -8,7 +8,6 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../common/constants/app_colors.dart';
 import '../../common/widget/theme_bloc/theme_bloc.dart';
-import '../home/bloc/weather_bloc.dart';
 import 'bloc/map_bloc.dart';
 import 'cubit/search_cubit.dart';
 import 'widgets/custom_search_bar.dart';

@@ -34,22 +34,35 @@ class _HomePage extends State<HomePage> {
               ),
             ),
             onSuccess: (state) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxWidth: 400,
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<WeatherBloc>().add(RefreshData());
+                },
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      width: 1.sw,
+                      height: .95.sh,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              maxWidth: 400,
+                            ),
+                            child: const Column(
+                              children: [
+                                HomeTopWidget(),
+                                Expanded(flex: 4, child: WeatherIconWidget()),
+                                Expanded(flex: 3, child: WeatherStatusWidget()),
+                                Expanded(child: HomeFooterButton()),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    child: const Column(
-                      children: [
-                        HomeTopWidget(),
-                        Expanded(flex: 4, child: WeatherIconWidget()),
-                        Expanded(flex: 3, child: WeatherStatusWidget()),
-                        Expanded(child: HomeFooterButton()),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
               );
             },

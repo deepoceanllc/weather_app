@@ -6,7 +6,6 @@ import 'package:weather_app/src/features/home/widgets/weather_status_widget.dart
 import 'package:weather_app/src/features/settings/settings_page.dart';
 import 'package:weather_app/src/features/widgets/custom_weatherwidget.dart';
 
-import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/constants/weather_icons.dart';
 import '../home/bloc/weather_bloc.dart';
@@ -80,7 +79,7 @@ class _DetailPage extends State<DetailPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsPage(),
+                    builder: (context) => const SettingsPage(),
                   ),
                 );
               },
@@ -106,7 +105,7 @@ class _DetailPage extends State<DetailPage> {
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0, 1],
+                stops: const [0, 1],
               ),
             ),
             child: SafeArea(

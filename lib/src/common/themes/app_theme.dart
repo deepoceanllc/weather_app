@@ -5,8 +5,8 @@ abstract final class AppTheme {
   static final light = ThemeData(
     useMaterial3: true,
     fontFamily: "Overpass",
-    primaryColor: AppColors.white,
-    colorScheme: ColorScheme.light(
+    primaryColor: AppColors.blue1,
+    colorScheme: const ColorScheme.light(
       primary: AppColors.blue1,
       secondary: AppColors.blue2,
     ),
@@ -15,8 +15,8 @@ abstract final class AppTheme {
   static final dark = ThemeData(
     useMaterial3: true,
     fontFamily: "Overpass",
-    primaryColor: AppColors.dark,
-    colorScheme: ColorScheme.dark(
+    primaryColor: AppColors.white,
+    colorScheme: const ColorScheme.dark(
       primary: AppColors.darkBlue1,
       secondary: AppColors.darkBlue2,
     ),

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:weather_app/main.dart';
 import 'package:weather_app/src/common/constants/app_colors.dart';
 import 'package:weather_app/src/common/routes/app_routes.dart';
 import 'package:weather_app/src/features/home/bloc/weather_bloc.dart';
@@ -31,8 +33,7 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
             builder: (context, state) {
               state = state as SuccessState;
               final items = WeatherBloc.db.getStringList("cities") ?? [];
-              PointModel model = PointModel.fromMap(jsonDecode(
-                  WeatherBloc.db.getString(WeatherBloc.cityKey) as String));
+
               return PopupMenuButton(
                 elevation: 1,
                 constraints: const BoxConstraints.expand(
@@ -89,12 +90,21 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
                     Expanded(
                       flex: 3,
                       child: Center(
-                        child: Text(
-                          model.name,
-                          style: const TextStyle(
-                            color: AppColors.white,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+                        child: BlocBuilder<WeatherBloc, WeatherState>(
+                          builder: (context, state) {
+                            PointModel model = PointModel.fromMap(
+                              jsonDecode(
+                                $storage.getString(WeatherBloc.cityKey) as String,
+                              ),
+                            );
+                            return Text(
+                              model.name,
+                              style: const TextStyle(
+                                color: AppColors.white,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -117,9 +127,68 @@ class _HomeTopWidgetState extends State<HomeTopWidget> {
           ),
         ),
         IconButton(
-          onPressed: () => context.read<WeatherBloc>().add(RefreshData()),
+          onPressed: () {
+            showCupertinoDialog(
+              context: context,
+              builder: (context) => CupertinoAlertDialog(
+                title: const Text("Dialog"),
+                actions: [
+                  CupertinoButton(
+                    child: const Text("Back"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+                content: SizedBox(
+                  height: .2.sh,
+                  width: .7.sw,
+                  child: BlocBuilder<WeatherBloc, WeatherState>(
+                    builder: (context, state) {
+                      List<PointModel> items =
+                          ($storage.getStringList("cities") ?? [])
+                              .map((e) => PointModel.fromMap(jsonDecode(e)))
+                              .toList();
+                      return ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          return CupertinoListTile(
+                            trailing: IconButton(
+                              onPressed: () async {
+                                if (items.length > 1) {
+                                  final citi = (PointModel.fromMap(jsonDecode(
+                                      $storage.getString('city') ?? "{}")));
+                                  if (citi.name == items.removeAt(index).name) {
+                                    await $storage.setString("city",
+                                        jsonEncode(items.first.toMap()));
+                                  }
+                                  await $storage.setStringList(
+                                    "cities",
+                                    items
+                                        .map((e) => jsonEncode(e.toMap()))
+                                        .toList(),
+                                  );
+                                }
+                                if(mounted){
+                                  context
+                                      .read<WeatherBloc>()
+                                      .add(RefreshData());
+                                }
+                              },
+                              icon: const Icon(CupertinoIcons.trash),
+                            ),
+                            title: Text(items[index].name),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
           icon: const Icon(
-            Icons.refresh,
+            CupertinoIcons.trash,
             color: AppColors.white,
           ),
         ),

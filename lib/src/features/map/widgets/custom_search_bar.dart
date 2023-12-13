@@ -54,7 +54,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         prefixIconConstraints: const BoxConstraints(
           maxWidth: 50,
         ),
-        hintStyle: TextStyle(color: AppColors.darkBlue1),
+        hintStyle: const TextStyle(color: AppColors.darkBlue1),
         hintText: "Search here",
       ),
     );

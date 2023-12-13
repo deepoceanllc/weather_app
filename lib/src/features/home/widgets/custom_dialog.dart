@@ -22,11 +22,11 @@ class CustomDialog extends StatelessWidget {
         ),
         actions: [
           CupertinoButton(
-            child: const Text("Retry"),
+            child: Text("Retry" , style: TextStyle(color: Theme.of(context).primaryColor),),
             onPressed: () => context.read<WeatherBloc>().add(RefreshData()),
           ),
           CupertinoButton(
-              child: const Text("Settings"),
+              child: Text("Settings",style: TextStyle(color: Theme.of(context).primaryColor),),
               onPressed: () async => await OpenSettings.openWIFISetting()),
         ],
         content: Padding(

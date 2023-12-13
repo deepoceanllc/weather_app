@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:weather_app/src/features/home/bloc/weather_bloc.dart';
-import 'package:weather_app/src/features/widgets/app_background.dart';
 
 import '../../common/constants/app_colors.dart';
 import '../../common/widget/theme_bloc/theme_bloc.dart';
@@ -33,7 +31,7 @@ class SettingsPage extends StatelessWidget {
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0, 1],
+            stops: const [0, 1],
           ),
         ),
         child: SafeArea(
@@ -62,7 +60,7 @@ class SettingsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10.r),
                   ListTile(
-                    onTap: () {},
+                    onTap: null,
                     title: const Text("Language",style: TextStyle(color: AppColors.white),),
                     trailing: Icon(Icons.language, size: 30.r,color: AppColors.white,),
                     shape: RoundedRectangleBorder(

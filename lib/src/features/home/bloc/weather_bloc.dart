@@ -36,7 +36,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   ) async {
     try {
       db = await SharedPreferences.getInstance();
-      // db.clear();
+      db.clear();
       final city = await _getLocationData();
       emit(SuccessState(city));
     } on DioException catch (e) {
@@ -73,7 +73,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     Emitter<WeatherState> emit,
   ) async {
     try {
-      emit(LoadingState());
+      // emit(LoadingState());
       final city = await _getLocationData();
       emit(SuccessState(city));
     } on DioException catch (e) {

@@ -32,13 +32,10 @@ class App extends StatelessWidget {
                 themeMode: state.getTheme(),
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
-                builder: (context, child) =>
-                    BlocProvider<WeatherBloc>(
-                      create: (context) =>
-                      WeatherBloc()
-                        ..add(GetData()),
-                      child: child,
-                    ),
+                builder: (context, child) => BlocProvider<WeatherBloc>(
+                  create: (context) => WeatherBloc()..add(GetData()),
+                  child: child,
+                ),
               );
             },
           ),
